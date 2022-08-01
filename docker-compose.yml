@@ -1,0 +1,22 @@
+version: '3'
+services:
+  elasticsearch:
+    image: elasticsearch:7.17.4
+    container_name: elasticsearch
+    environment:
+      - cluster.name=elasticsearch  # Установите имя кластера на elasticsearch
+      - discovery.type=single-node  # Начать в режиме одного узла
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"  # Настроить использование размера памяти jvm
+    ports:
+      - 9200:9200
+  kibana:
+    image: kibana:7.17.4
+    container_name: kibana
+    links:
+      - elasticsearch:192.xxx.xx.xxx # Вы можете использовать доменное имя es для доступа к службе elasticsearch
+    depends_on:
+      -  elasticsearch #kibana запускается после запуска elasticsearch
+    environment:
+      - elasticsearch.hosts=http://localhost:9200
+    ports:
+      - 5601:5601
