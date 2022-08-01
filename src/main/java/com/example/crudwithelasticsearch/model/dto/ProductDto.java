@@ -9,16 +9,16 @@ import lombok.*;
 public class ProductDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
+    private String id;
 
 
     private String name;
 
 
-    private int count;
+    private Integer count;
 
 
-    private double price;
+    private Double price;
 
     @Override
     public String toString() {

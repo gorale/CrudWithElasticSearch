@@ -1,43 +1,34 @@
 package com.example.crudwithelasticsearch.model.entity;
 
 
-import lombok.*;
-import org.hibernate.Hibernate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import javax.persistence.*;
-import java.util.Objects;
+import javax.annotation.processing.Generated;
 
-@Entity
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@Data
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
+@Document(indexName = "product")
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column
     private String name;
 
-    @Column
-    private int count;
+    private Double price;
 
-    @Column
-    private double price;
+    private Integer count;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Product category = (Product) o;
-        return id != null && Objects.equals(id, category.id);
-    }
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
+
+
 }

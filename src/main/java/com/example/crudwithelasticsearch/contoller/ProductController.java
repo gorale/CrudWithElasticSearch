@@ -3,6 +3,7 @@ package com.example.crudwithelasticsearch.contoller;
 
 import com.example.crudwithelasticsearch.model.dto.ProductDto;
 import com.example.crudwithelasticsearch.model.entity.Product;
+import com.example.crudwithelasticsearch.repository.ProductRepository;
 import com.example.crudwithelasticsearch.response.EntityCreatingResponse;
 import com.example.crudwithelasticsearch.response.EntityDeletingResponse;
 import com.example.crudwithelasticsearch.response.EntityLookupResponse;
@@ -28,23 +29,35 @@ public class ProductController {
 
     private final ProductService productService;
 
+    private final ProductRepository productRepository;
+
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
+
+
 
     @PostMapping
     public ResponseEntity<?> createProduct(@RequestBody ProductDto productDto) {
         logger.info("Received a request to create a Product.");
-        ProductDto productDto1 = productService.createProduct(productDto);
-
-        if (productDto1 == null) {
-            logger.warn("There is a Category with name " + productDto.getName());
+        Optional<Product> optionalProduct = productService.createProduct(productDto);
+        if(optionalProduct.isEmpty()){
             return new EntityCreatingResponse<Product>().onFailure("Can not create product");
         }
         logger.info("Product is created.");
-        return new EntityCreatingResponse<ProductDto>().onSuccess(productDto1);
+        return new EntityCreatingResponse<ProductDto>().onSuccessES(productDto.toString());
     }
 
+
+    @GetMapping(value = "/search/{name}")
+    public List<Product> findAll(@PathVariable String name)
+    {
+        return productRepository.findByName(name);
+    }
+
+
+
+
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCategory(@PathVariable("id") Long id) {
+    public ResponseEntity<?> getProduct(@PathVariable("id") String id) {
         logger.info("Received a request to get a Product with id " + id);
         Optional<ProductDto> productDto = productService.getProduct(id);
 
@@ -55,9 +68,9 @@ public class ProductController {
         logger.warn("There is not product with given id");
         return new EntityLookupResponse<ProductDto>().onFailure("Product not found");
     }
-
+//
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCategory(@PathVariable("id") Long id) {
+    public ResponseEntity<?> deleteCategory(@PathVariable("id") String id) {
         logger.info("Received a request to delete a Product with id " + id);
         Optional<ProductDto> productDto = productService.getProduct(id);
 
@@ -72,7 +85,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(@RequestBody ProductDto productDto,
-                                            @PathVariable("id") Long id) {
+                                            @PathVariable("id") String id) {
         logger.info("Received a request to update a product with id " + id);
         Optional<ProductDto> optionalProductDto = productService.updateProduct(productDto, id);
 
@@ -107,5 +120,7 @@ public class ProductController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 
 }

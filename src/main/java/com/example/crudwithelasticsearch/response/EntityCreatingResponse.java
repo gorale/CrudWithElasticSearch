@@ -13,4 +13,9 @@ public class EntityCreatingResponse<T> {
     public ResponseEntity<?> onSuccess(T entityDto) {
         return ResponseEntity.ok().body(entityDto);
     }
+
+    public ResponseEntity<?> onSuccessES(String message) {
+        return ResponseEntity.status(HttpStatus.OK).
+                body(message);
+    }
 }

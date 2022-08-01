@@ -3,15 +3,20 @@ package com.example.crudwithelasticsearch.repository;
 import com.example.crudwithelasticsearch.model.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+import java.util.List;
 
-public interface ProductRepository extends JpaRepository<Product,Long> {
+@Component
+public interface ProductRepository extends ElasticsearchRepository<Product, String> {
 
-    @Override
-    Optional<Product> findById(Long id);
+//    Page<Product> findByName(String name, Pageable pageable);
 
-    @Override
-    Page<Product> findAll(Pageable pageable);
+//    @Query("{\"bool\": {\"must\": [{\"match\": {\"name\": \"?0\"}}]}}")
+//    Page<Product> findByNameUsingCustomQuery(String name, Pageable pageable);
+
+    List<Product> findByName(String name);
+
+
 }

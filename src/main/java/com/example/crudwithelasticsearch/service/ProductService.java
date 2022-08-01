@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -19,18 +20,23 @@ public class ProductService {
 
     private final ProductMapper productMapper;
 
-    public ProductDto createProduct(ProductDto productDto){
+    public Optional<Product> createProduct(ProductDto productDto){
 
+        Product product = Product.builder()
+                .id(UUID.randomUUID()
+                        .toString())
+                .name(productDto.getName())
+                .count(productDto.getCount())
+                .price(productDto.getPrice())
+                .build();
 
-        Product product = this.productMapper.convertToEntity(productDto);
+        productRepository.save(product);
 
-        Product savedProduct = this.productRepository.save(product);
-
-        return this.productMapper.convertToDto(savedProduct);
+        return Optional.of(product);
 
     }
 
-    public Optional<ProductDto> getProduct(Long id){
+    public Optional<ProductDto> getProduct(String id){
         Optional<Product> product = productRepository.findById(id);
 
         if (product.isEmpty()) {
@@ -39,11 +45,11 @@ public class ProductService {
         return Optional.of(productMapper.convertToDto(product.get()));
     }
 
-    public void deleteProduct(Long id){
+    public void deleteProduct(String id){
         productRepository.deleteById(id);
     }
 
-    public Optional<ProductDto> updateProduct(ProductDto productDto, Long id){
+    public Optional<ProductDto> updateProduct(ProductDto productDto, String id){
 
         Optional<Product> productOptional = productRepository.findById(id);
         if (productOptional.isEmpty()) {
@@ -63,6 +69,7 @@ public class ProductService {
 
         return productRepository.findAll(pageable);
     }
+
 
 
 }
