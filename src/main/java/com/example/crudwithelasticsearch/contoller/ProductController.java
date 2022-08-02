@@ -57,7 +57,7 @@ public class ProductController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProduct(@PathVariable("id") String id) {
+    public ResponseEntity<?> getProduct(@PathVariable("id") Long id) {
         logger.info("Received a request to get a Product with id " + id);
         Optional<ProductDto> productDto = productService.getProduct(id);
 
@@ -70,7 +70,7 @@ public class ProductController {
     }
 //
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCategory(@PathVariable("id") String id) {
+    public ResponseEntity<?> deleteCategory(@PathVariable("id") Long id) {
         logger.info("Received a request to delete a Product with id " + id);
         Optional<ProductDto> productDto = productService.getProduct(id);
 
@@ -85,7 +85,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(@RequestBody ProductDto productDto,
-                                            @PathVariable("id") String id) {
+                                            @PathVariable("id") Long id) {
         logger.info("Received a request to update a product with id " + id);
         Optional<ProductDto> optionalProductDto = productService.updateProduct(productDto, id);
 

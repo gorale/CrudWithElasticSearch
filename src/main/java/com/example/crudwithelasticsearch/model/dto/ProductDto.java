@@ -9,7 +9,7 @@ import lombok.*;
 public class ProductDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private String id;
+    private Long id;
 
 
     private String name;

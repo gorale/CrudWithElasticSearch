@@ -5,27 +5,29 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import javax.annotation.processing.Generated;
+import javax.persistence.*;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Document(indexName = "product")
 public class Product {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column
     private String name;
 
+    @Column
     private Double price;
 
+    @Column
     private Integer count;
 
 
