@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: 'jdbc:mysql://localhost:3306/crud_with_elasticsearch'
+    username: gor
+    password: '1111'
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        connection:
+          driver_class: com.mysql.jdbc.Driver
+          url: 'jdbc:mysql://localhost:3306/crud_with_elasticsearch'
+          username: gor
+          password: '1111'
+    show-sql: true
+server:
+  port: '8083'
+logging:
+  level:
+    org:
+      springframework: INFO
+    com:
+      mkyong: DEBUG
+  file:
+    name: app.log
+  pattern:
+    file: '%d %p %c{1.} [%t] %m%n'
